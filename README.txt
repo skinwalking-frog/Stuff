@@ -13,5 +13,4 @@ https://github.com/skinwalking-frog/Stuff
     memorizing all the tools avaiable and when/hot to use them
     Recursive programs
     Math
-    explaining my code to someone else in a coherent way
-
+    explaining my code to someone else in a coherent way 
