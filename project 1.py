@@ -79,6 +79,8 @@ def main():
         elif user_in.lower().strip() == "leave":
             print("Goodbye")
             running = False
+        else:
+            print("unsupported option, try again")
 
 if __name__ == "__main__":
     main()
