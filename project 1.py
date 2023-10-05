@@ -4,6 +4,18 @@ Author: Oliver Rothe
 year: 9/27/2023
 """
 
+#tests:
+#run code and check for the print statement and menu, 
+#input a non option into the prompt and check wether you get back to the menu with a message
+#then enter every menu option and check the output, 
+#you could use the built in inspect_machine function to check changes to class attributes.
+#lastly make sure the program ends when you enter the "leave" option.
+
+
+
+
+#commented out unused code
+
 # class Timemachine():
 #     def __init__(self, chamber, button, plug, dial):
 #         self.chamber = chamber
