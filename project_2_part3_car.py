@@ -144,7 +144,6 @@ if my_car.dolphin == True:
         car_eng = file.readline()
         car_trans = file.readline()
         dolphin = Car(car_trans, car_eng, car_name)
+    dolphin.mainMenu()
 else:
     print("you got your head bitten off by a wild flying dolphin while walking away from your car")
-dolphin.mainMenu()
-dolphin.dolphin = False
