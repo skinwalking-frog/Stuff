@@ -26,6 +26,7 @@ class Car:
         print('What would you like to do?\n\n')
         choice = input('(T)urn the key, (S)hift gears, (D)rive, (I)nfo on your current car, or (G)et out of the car, never to return...: (anything else) Drive a dolphin, like from the ocean...')
         choice = choice.upper()
+        print(f"your choice = {choice}")
         if choice == 'T':
             if self.engine == 'ON':
                 print('You turn the key to the of position, and stop the engine. ')
@@ -47,13 +48,13 @@ class Car:
                     self.trans(self.gear)
                 elif driveChoice == 'N':
                     self.mainMenu()
-        if choice == 'S':
+        elif choice == 'S':
             self.trans(self.gear)
-        if choice == 'D':
+        elif choice == 'D':
             self.drive()
-            if choice == 'I':
-                self.displayInfo()
-        if choice == 'G':
+        elif choice == 'I':
+            self.displayInfo()
+        elif choice == 'G':
             print('You get out, never to return. Goodbye')
         else:
             self.dolphin = True
@@ -143,7 +144,7 @@ if my_car.dolphin == True:
         car_name = file.readline()
         car_eng = file.readline()
         car_trans = file.readline()
-        dolphin = Car(car_trans, car_eng, car_name)
+        dolphin = Car(car_trans.strip(), car_eng.strip(), car_name)
     dolphin.mainMenu()
 else:
     print("you got your head bitten off by a wild flying dolphin while walking away from your car")
