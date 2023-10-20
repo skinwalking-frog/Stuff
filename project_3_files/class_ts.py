@@ -7,9 +7,12 @@ class Pizza:
         self.crust_type = crust_type
 
     def pSize(self, input):
-        #1-Small 
-        #2-Medium
-        #3-Large
+        """
+        1-Small 
+        2-Medium
+        3-Large
+        """
+  
         if input == '1':
             self.size = 'small'
         elif input == '2':
@@ -18,10 +21,12 @@ class Pizza:
             self.size = 'Large'
 
     def pShape(self, input):
-        #1-circle
-        #2-square
-        #3-Triangle
-        #4-Christmas Tree
+        """
+        1-circle
+        2-square
+        3-Triangle
+        4-Christmas Tree
+        """
         if input == '1':
             self.shape = 'Circle'
         elif input == '2':
@@ -33,10 +38,12 @@ class Pizza:
     
     
     def pMeatType(self, input):
-        #1-Pepperoni
-        #2-Sausage
-        #3-Chicken
-        #4-None
+        """
+        1-Pepperoni
+        2-Sausage
+        3-Chicken
+        4-None
+        """
         if input == '1':
             self.meat_type = 'Pepperoni'
         elif input == '2':
@@ -47,10 +54,12 @@ class Pizza:
             self.meat_type = 'None'
     
     def pVegType(self, input):
-        #1-Bell Peppers
-        #2-Tomatoes
-        #3-Olives
-        #4-None
+        """
+        1-Bell Peppers
+        2-Tomatoes
+        3-Olives
+        4-None
+        """
         if input == '1':
             self.veg_type = 'Bell Peppers'
         elif input == '2':
@@ -61,9 +70,11 @@ class Pizza:
             self.veg_type = 'None'
 
     def pCrustType(self, input):
-        #1-Thin
-        #2-Thick
-        #3-Stuffed
+        """
+        1-Thin
+        2-Thick
+        3-Stuffed
+        """
         if input == '1':
             self.crust_type = 'Thin'
         elif input == '2':

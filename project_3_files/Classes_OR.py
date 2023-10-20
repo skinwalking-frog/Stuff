@@ -48,7 +48,7 @@ class oven():
 
 
 class baking_sheet():
-    def __init__(self, size, load):
+    def __init__(self, size = 400, load = None):
         self.size = f"{size} square inches"
         self.load = load
 
