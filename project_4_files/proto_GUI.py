@@ -1,6 +1,6 @@
 """
 Oliver rothe
-prototype GUI for project 4's data searching algorithm
+prototype GUI for project 4
 """
 
 import tkinter as tk
@@ -28,3 +28,7 @@ class GUI_1():
 if __name__ == "main":
     window = GUI_1()
     window.run_GUI()
+
+#tests
+#for some reason im unable to install pytest through command line pip install
+#also unsure what to test as there isnt much data being worked on in this program, maybe the button command?
