@@ -17,6 +17,7 @@ class GUI_2():
             self.user_in.append(tk.StringVar(master=self.root))
             self.boxs.append(tk.Entry(master=self.root, textvariable=self.user_in[i]))
             self.boxs[i].pack()
+            print(i)
             
 
         self.button = tk.Button(master=self.root, text="set", command = self.set_lab)
@@ -29,6 +30,6 @@ class GUI_2():
     def run_GUI(self):
         self.root.mainloop()
 
-if __name__ == "main":
+if __name__ == "__main__":
     window = GUI_2()
     window.run_GUI()
