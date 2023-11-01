@@ -6,7 +6,7 @@ prototype GUI #2 for project 4
 import tkinter as tk
 
 class GUI_2():
-    """ten text boxes and button that sets label to next largest value in text boxes"""
+    """ten text boxes and button that sets label to next smallest value in text boxes"""
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry("600x400")
@@ -17,7 +17,6 @@ class GUI_2():
             self.user_in.append(tk.StringVar(master=self.root))
             self.boxs.append(tk.Entry(master=self.root, textvariable=self.user_in[i]))
             self.boxs[i].pack()
-            print(i)
             
 
         self.button = tk.Button(master=self.root, text="set", command = self.set_lab)
@@ -25,7 +24,7 @@ class GUI_2():
         self.button.pack()
 
     def set_lab(self):
-        self.label.config(text=self.user_in.get())
+        self.label.config(text=self.user_in[0].get())
 
     def run_GUI(self):
         self.root.mainloop()
