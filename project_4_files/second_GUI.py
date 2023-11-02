@@ -20,7 +20,7 @@ class GUI_2():
         self.button = tk.Button(master=self.root, text="next", command = self.set_lab)
         self.label.pack()
         self.button.pack()
-        self.root.bind_all('<Key>', self.update_user_in)
+        self.root.bind_all('<Key>', self.update_user_in) #update set of input numbers everytime a key is pressed
 
     def update_user_in(self, event):
         self.user_in = []
