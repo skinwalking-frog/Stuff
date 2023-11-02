@@ -14,17 +14,24 @@ class GUI_2():
         self.user_in = []
         self.label = tk.Label(master=self.root, text="empty")
         for i in range(10):
-            self.user_in.append(tk.StringVar(master=self.root))
-            self.boxs.append(tk.Entry(master=self.root, textvariable=self.user_in[i]))
+            self.boxs.append(tk.Entry(master=self.root))
             self.boxs[i].pack()
-            
 
-        self.button = tk.Button(master=self.root, text="set", command = self.set_lab)
+        self.button = tk.Button(master=self.root, text="next", command = self.set_lab)
         self.label.pack()
         self.button.pack()
+        self.root.bind_all('<Key>', self.update_user_in)
+
+    def update_user_in(self, event):
+        self.user_in = []
+        for i in range(len(self.boxs)):
+            if self.boxs[i].get() != "":
+                self.user_in.append(int(self.boxs[i].get()))
 
     def set_lab(self):
-        self.label.config(text=self.user_in[0].get())
+        if len(self.user_in) >= 1:
+            self.user_in.sort()  #is this cheating a little?  
+            self.label.config(text=self.user_in.pop(0))
 
     def run_GUI(self):
         self.root.mainloop()
