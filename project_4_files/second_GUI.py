@@ -1,6 +1,6 @@
 """
 Oliver rothe
-prototype GUI #2 for project 4
+GUI #2 for project 4
 """
 
 import tkinter as tk
@@ -39,3 +39,10 @@ class GUI_2():
 if __name__ == "__main__":
     window = GUI_2()
     window.run_GUI()
+
+#pytest wont install properly. 
+#But some basic tests I could run would be: 
+#putting undesired input into the boxes to see if the program crashes. 
+#(it does error, because it cant cast alphabetical chars to an int)
+#enter numbers in only some boxes. (the program actually still works for this one)
+#test individual class methods in an isolated environment to see if they output correctly or if they can handle others types of input.
