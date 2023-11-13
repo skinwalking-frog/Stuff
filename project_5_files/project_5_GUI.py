@@ -53,17 +53,17 @@ class search_GUI():
                              self.newH)
 
     def reset(self):
+        self.iter = 0
         for a in range(len(self.rectangles)):
-            self.iter = 0
             self.canv.itemconfig(self.rectangles[a], fill = "yellow")
         try:
             self.target = int(self.enter.get())
         except ValueError:
+            print("invalid input, must be int")
             self.window.quit()
         self.search()
 
     def search(self):        
-        # for i in range(len(self.rectangles)):
         if self.iter >= len(self.rectangles):
             print("search complete")
         elif self.height_by_index[self.iter] != self.target:
@@ -73,7 +73,7 @@ class search_GUI():
         else:
             self.canv.itemconfig(self.rectangles[self.iter], fill = "green")
             self.iter+=1
-            self.window.after(200, self.search)        
+            self.window.after(200, self.search)
 
     def run(self):
         """runs the main loop"""
