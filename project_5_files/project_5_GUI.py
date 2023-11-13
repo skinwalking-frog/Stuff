@@ -63,7 +63,7 @@ class search_GUI():
             self.window.quit()
         self.search()
 
-    def search(self):        
+    def search(self):
         if self.iter >= len(self.rectangles):
             print("search complete")
         elif self.height_by_index[self.iter] != self.target:
