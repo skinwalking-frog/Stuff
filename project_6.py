@@ -1,3 +1,15 @@
+"""
+Oliver Rothe
+Project 6
+
+program sorts a randomly generated list of 100 values between 1 and 100 and outputs the resultant list
+"""
+
+#How would I test this program? 
+#with everything being a computer handled value and there being no user input, 
+#i dont see room for error that needs testing. 
+#The thing also prints its progress so we could easily see if something was wrong.
+
 import random
 
 def sort(list: list):
@@ -21,4 +33,3 @@ if __name__=="__main__":
     for i in range(1,100):
         dataset.append(random.randint(1,100)) #make 100 random values
     print(sort(dataset))
-
