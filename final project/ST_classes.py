@@ -49,12 +49,12 @@ class EPS_conduit(warp_plasma):
     def __init__(self):
         super().__init__()
         self.flow = 100.0
+        self.clearance = 1.00
 
 class warp_coils(EPS_conduit):
     def __init__(self):
         super().__init__()
         self.warp_speed = 10
-
 
 class UI():
     def __init__(self):
@@ -71,23 +71,35 @@ class UI():
         self.main.rowconfigure(2, weight=1)
         self.main.rowconfigure(3, weight=1)
 
+        #objects
+        self.warp_core = intermix_chamber()
+        self.dil_reg = dilithium_regulator()
+        self.dil_matrix = dilithium_matrix()
+        self.A_frame = articulation_frame()
+        self.TMC = theta_matrix_compositor()
+        self.warp_coils = warp_coils()
+        self.LEPS = EPS_conduit()
+        self.REPS = EPS_conduit()
+
         #frames
         self.frames = [[tk.Frame(self.main, border=2, bg="light grey") for i in range(2)] for j in range(2)]
 
         #stringvars
-        self.alignment_error = tk.StringVar(self.main, f"dilithium matrix allignment error: {articulation_frame().error}%")
-        self.regulator_output = tk.StringVar(self.main, f"dilithium regulator output throttle: {dilithium_regulator().output}%")
-        self.crystalization = tk.StringVar(self.main, f"dilithium matrix crystalization: {dilithium_matrix().crystalization}%")
-        self.TMcompositor = tk.StringVar(self.main, f"theta-matrix compositor runing: {theta_matrix_compositor().run}")
-        self.intermix_ratio = tk.StringVar(self.main, f"intermix ratio: {intermix_chamber().intermix_ratio}")
-        self.containment_seals = tk.StringVar(self.main, f"antimatter containment: {intermix_chamber().contained}")
-        self.EPS_L_pressure = tk.StringVar(self.main, f"left EPS manifold pressure: {EPS_conduit().pressure}")
-        self.EPS_L_temperature = tk.StringVar(self.main, f"left EPS manifold temperature: {EPS_conduit().temperature}")
-        self.EPS_L_flow = tk.StringVar(self.main, f"left EPS manifold flow: {EPS_conduit().flow}%")
-        self.EPS_R_pressure = tk.StringVar(self.main, f"right EPS manifold pressure: {EPS_conduit().pressure}")
-        self.EPS_R_temperature = tk.StringVar(self.main, f"right EPS manifold temperature: {EPS_conduit().temperature}")
-        self.EPS_R_flow = tk.StringVar(self.main, f"right EPS manifold flow: {EPS_conduit().flow}%")
-        self.warp_speed = tk.StringVar(self.main, f"maximum warp speed: {warp_coils().warp_speed}")
+        self.alignment_error = tk.StringVar(self.main, f"dilithium matrix allignment error: {self.A_frame.error}%")
+        self.regulator_output = tk.StringVar(self.main, f"dilithium regulator output throttle: {self.dil_reg.output}%")
+        self.crystalization = tk.StringVar(self.main, f"dilithium matrix crystalization: {self.dil_matrix.crystalization}%")
+        self.TMcompositor = tk.StringVar(self.main, f"theta-matrix compositor runing: {self.TMC.run}")
+        self.intermix_ratio = tk.StringVar(self.main, f"intermix ratio: {self.warp_core.intermix_ratio}")
+        self.containment_seals = tk.StringVar(self.main, f"antimatter containment: {self.warp_core.contained}")
+        self.EPS_L_pressure = tk.StringVar(self.main, f"left EPS manifold pressure: {self.LEPS.pressure}")
+        self.EPS_L_temperature = tk.StringVar(self.main, f"left EPS manifold temperature: {self.LEPS.temperature}")
+        self.EPS_L_flow = tk.StringVar(self.main, f"left EPS manifold flow: {self.LEPS.flow}%")
+        self.EPS_R_pressure = tk.StringVar(self.main, f"right EPS manifold pressure: {self.REPS.pressure}")
+        self.EPS_R_temperature = tk.StringVar(self.main, f"right EPS manifold temperature: {self.REPS.temperature}")
+        self.EPS_R_flow = tk.StringVar(self.main, f"right EPS manifold flow: {self.REPS.flow}%")
+        self.EPS_L_clear = tk.StringVar(self.main, f"left EPS plasma flow clearance: {self.LEPS.clearance}")
+        self.EPS_R_clear = tk.StringVar(self.main, f"right EPS plasma flow clearance: {self.REPS.clearance}")
+        self.warp_speed = tk.StringVar(self.main, f"maximum warp speed: {self.warp_coils.warp_speed}")
 
         #entries
         self.reg_out_entry = tk.Entry(self.frames[0][1])
@@ -106,6 +118,8 @@ class UI():
         self.R_EPS_P_lbl = tk.Label(self.frames[1][0], textvariable=self.EPS_R_pressure)
         self.R_EPS_T_lbl = tk.Label(self.frames[1][0], textvariable=self.EPS_R_temperature)
         self.R_EPS_F_lbl = tk.Label(self.frames[1][0], textvariable=self.EPS_R_flow)
+        self.L_EPS_C_lbl = tk.Label(self.frames[1][1], textvariable=self.EPS_L_clear)
+        self.R_EPS_C_lbl = tk.Label(self.frames[1][1], textvariable=self.EPS_R_clear)
         self.warp_lbl = tk.Label(self.main, textvariable=self.warp_speed, bg="light blue", padx=5, pady=3, font="bold 18")
 
         #static labels
@@ -114,14 +128,16 @@ class UI():
         self.alignment_monitor = tk.Label(self.frames[0][0], text="dilithium articulation frame alignment monitor", bg="light blue")
         self.output_regulation = tk.Label(self.frames[0][1], text="warp core output regulation", bg="light blue")
         self.EPS_monitor = tk.Label(self.frames[1][0], text="EPS plasma monitor", bg="light blue")
-        self.breach_monitor = tk.Label(self.frames[1][1], text="containment breach monitor", bg="light blue")
+        self.breach_monitor = tk.Label(self.frames[1][1], text="containment breach/blockage monitor", bg="light blue")
 
         #buttons
-        self.align_btn = tk.Button(self.frames[0][0], text="align", command=self.align)
-        self.regulator_output_btn = tk.Button(self.frames[0][1], text="set regulator output", command=self.set_output)
-        self.TMC_btn = tk.Button(self.frames[0][0], text="toggle theta-matrix compositor", command=self.toggle_TMC)
+        self.align_btn = tk.Button(self.frames[0][0], text="align", command= lambda: self.align(0))
+        self.regulator_output_btn = tk.Button(self.frames[0][1], text="set regulator output", command= lambda: self.set_output(self.reg_out_entry.get()))
+        self.TMC_btn = tk.Button(self.frames[0][0], text="toggle theta-matrix compositor", command= lambda: self.toggle_TMC(self.TMC.toggle_compositor()))
         self.ratio_btn = tk.Button(self.frames[0][1], text="set intermix ratio", command= lambda: self.set_ratio(self.ratio_entry.get()))
-
+        self.flush_LEPS = tk.Button(self.frames[1][1], text="flush left EPS manifold")
+        self.flush_REPS = tk.Button(self.frames[1][1], text="flush right EPS manifold")
+        
         #geometry managers
         for i in range(2):
             for j in range(2):
@@ -135,42 +151,75 @@ class UI():
         self.compositor_lbl.pack(fill="x")
         self.TMC_btn.pack(fill="x")
 
-        self.alignment_monitor.pack(fil="x")
-        self.align_err_lbl.pack(fil="x")
-        self.align_btn.pack(fil="x")
+        self.alignment_monitor.pack(fill="x")
+        self.align_err_lbl.pack(fill="x")
+        self.align_btn.pack(fill="x")
 
         self.output_regulation.pack(fill="x")
         self.reg_out_lbl.pack(fill="x")
         self.reg_out_entry.pack(fill="x")
-        self.regulator_output_btn.pack(fil="x")
-        self.ratio_lbl.pack(fil="x")
-        self.ratio_entry.pack(fil="x")
-        self.ratio_btn.pack(fil="x")
+        self.regulator_output_btn.pack(fill="x")
+        self.ratio_lbl.pack(fill="x")
+        self.ratio_entry.pack(fill="x")
+        self.ratio_btn.pack(fill="x")
 
-        self.EPS_monitor.pack(fil="x")
-        self.L_EPS_F_lbl.pack(fil="x")
-        self.L_EPS_P_lbl.pack(fil="x")
-        self.L_EPS_T_lbl.pack(fil="x")
-        self.R_EPS_F_lbl.pack(fil="x")
-        self.R_EPS_P_lbl.pack(fil="x")
-        self.R_EPS_T_lbl.pack(fil="x")
+        self.EPS_monitor.pack(fill="x")
+        self.L_EPS_F_lbl.pack(fill="x")
+        self.L_EPS_P_lbl.pack(fill="x")
+        self.L_EPS_T_lbl.pack(fill="x")
+        self.R_EPS_F_lbl.pack(fill="x")
+        self.R_EPS_P_lbl.pack(fill="x")
+        self.R_EPS_T_lbl.pack(fill="x")
 
-        self.breach_monitor.pack(fil="x")
-        self.containment_lbl.pack(fil="x")
+        self.breach_monitor.pack(fill="x")
+        self.containment_lbl.pack(fill="x")
+        self.R_EPS_C_lbl.pack(fill="x")
+        self.L_EPS_C_lbl.pack(fill="x")
 
     def align(self, new_error):
         self.alignment_error.set(f"dilithium matrix allignment error: {new_error}%")
+        self.update_data()
 
     def set_output(self, new_output):
-        self.regulator_output.set(f"dilithium regulator output throttle: {new_output}")
+        self.regulator_output.set(f"dilithium regulator output throttle: {new_output}%")
+        self.update_data()
 
     def toggle_TMC(self, status):
         self.TMcompositor.set(f"theta-matrix compositor runing: {status}")
+        self.update_data()
 
     def set_ratio(self, new_ratio):
         self.intermix_ratio.set(f"intermix ratio: {new_ratio}")
+        self.warp_core.intermix_ratio = new_ratio
+        self.update_data()
+    
+    def update_data(self):
+        self.REPS.temperature = self.dil_matrix.crystalization * self.dil_reg.output * (1/(2**self.A_frame.error)) * self.warp_core.intermix_ratio / 2.0 
+        self.LEPS.temperature = self.dil_matrix.crystalization * self.dil_reg.output * (1/(2**self.A_frame.error)) * self.warp_core.intermix_ratio / 2.0
+        self.REPS.pressure = self.REPS.temperature * 4
+        self.LEPS.pressure = self.LEPS.temperature * 4
+        self.REPS.flow = self.dil_reg.output * self.REPS.clearance
+        self.LEPS.flow = self.dil_reg.output * self.LEPS.clearance
+        self.warp_coils.flow = (self.REPS.flow + self.LEPS.flow)/2
+        self.warp_coils.temperature = (self.REPS.temperature + self.LEPS.temperature)/2
+        self.warp_coils.pressure = (self.REPS.pressure + self.LEPS.pressure)/2
+        self.warp_coils.warp_speed = (self.warp_coils.temperature/5000) * (self.warp_coils.pressure/20000) * (self.warp_coils.flow/100) * 10
 
+        #self.alignment_error.set(f"dilithium matrix allignment error: {self.A_frame.error}%")
+        #self.regulator_output.set(f"dilithium regulator output throttle: {self.dil_reg.output}%")
+        #self.crystalization.set(f"dilithium matrix crystalization: {self.dil_matrix.crystalization}%")
+        #self.TMcompositor.set(f"theta-matrix compositor runing: {self.TMC.run}")
+        #self.intermix_ratio.set(f"intermix ratio: {self.warp_core.intermix_ratio}")
+        self.containment_seals.set(f"antimatter containment: {self.warp_core.contained}")
+        self.EPS_L_pressure.set(f"left EPS manifold pressure: {self.LEPS.pressure}")
+        self.EPS_L_temperature.set(f"left EPS manifold temperature: {self.LEPS.temperature}")
+        self.EPS_L_flow.set(f"left EPS manifold flow: {self.LEPS.flow}%")
+        self.EPS_R_pressure.set(f"right EPS manifold pressure: {self.REPS.pressure}")
+        self.EPS_R_temperature.set(f"right EPS manifold temperature: {self.REPS.temperature}")
+        self.EPS_R_flow.set(f"right EPS manifold flow: {self.REPS.flow}%")
+        self.warp_speed.set(f"maximum warp speed: {self.warp_coils.warp_speed}")
 
-
+        self.main.update()
+    
     def run(self):
         self.main.mainloop()
