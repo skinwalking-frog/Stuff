@@ -11,6 +11,9 @@ for the purpose of this project."""
 import tkinter as tk
 import ST_classes as ST
 
-console = ST.UI()
+def main():
+    console = ST.UI()
+    console.run()
 
-console.run()
+if __name__ == "__main__":
+    main()
