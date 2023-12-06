@@ -20,15 +20,15 @@ def LoopDown(start, end, step, string: str, new_string = ""): #recursive loop to
         new_string = new_string + string[start]
         return LoopDown(start + step, end, step, string, new_string)
 
-#setting up the CWD    
-cwd = Path.cwd() 
+#setting up the CWD
+cwd = Path.cwd()
 
 #verifying the path exists to the input file
 if Path.exists(Path(f"{cwd}/final project/file_in.txt")):
     file_to_read = Path(f"{cwd}/final project/file_in.txt")
 else:
     #raise our custom error
-    raise NoFileFoundError(f"no file found at address: {cwd}/final project/file_in.txt")
+    raise NoFileFoundError(f"no file found at: {cwd}/final project/file_in.txt")
 
 with open(file_to_read, "r") as file:
     file_line = file.readline()
